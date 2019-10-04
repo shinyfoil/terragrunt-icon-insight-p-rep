@@ -9,8 +9,8 @@ include {
 }
 
 locals {
-  repo_owner = "robc-io"
-  repo_name = "terraform-aws-icon-p-rep-sg"
+  repo_owner = "shinyfoil"
+  repo_name = "terraform-aws-icon-fluentd-aggregator-sg"
   repo_version = "master"
   repo_path = ""
   local_source = true
@@ -23,10 +23,9 @@ dependency "vpc" {
 }
 
 inputs = {
-  name = "fluentd-agg"
+  name = "fluentd-aggregator"
   group = "mainnet"
   vpc_id = dependency.vpc.outputs.vpc_id
-  resource_group = "" # TODO RM
 
 //  TODO: Fix this
   tags = {}
