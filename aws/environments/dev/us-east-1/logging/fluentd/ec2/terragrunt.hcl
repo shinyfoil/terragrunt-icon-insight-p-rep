@@ -1,20 +1,28 @@
 terraform {
-  source = "../../../../../modules/terraform-aws-icon-fluentd-aggregator"
+  source = "../../../../../../modules/terraform-aws-icon-fluentd-aggregator-node"
 }
 include {
   path = find_in_parent_folders()
 }
 
 dependency "vpc" {
-  config_path = "../../network/vpc-services"
+  config_path = "../../../network/vpc-services"
 }
 
 dependency "keys" {
   config_path = "../keys"
 }
 
+dependency "sg" {
+  config_path = "../sg"
+}
+
+dependency "dns" {
+  config_path = "../../../network/dns"
+}
+
 inputs = {
-  name = "fluent"
+  name = "fluentd-aggregator"
 
   volume_dir = ""
   ebs_volume_size = 200
@@ -28,9 +36,7 @@ inputs = {
   security_groups = dependency.sg.outputs.security_group_ids
   subnet_id = dependency.vpc.outputs.public_subnets[0]
 
-  instance_profile_id = dependency.iam.outputs.instance_profile_id
-
-  user_data_script = ""
+  user_data_script = "user_data_ubuntu.sh"
 
   zone_id = dependency.dns.outputs.zone_id
   domain = "us-east-1.aws.patchnotes.xyz"
